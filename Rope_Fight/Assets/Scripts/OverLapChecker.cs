@@ -12,10 +12,12 @@ public class OverLapChecker : MonoBehaviour
         obj_pos = transform;
     }
     float overlapDistance;
+   public float overlapAmount;
     private void OnTriggerStay2D(Collider2D collision)
     {
-        var colRslt = Physics2D.OverlapAreaAll(collision.bounds.size, this.GetComponent<Collider2D>().bounds.size);
-        Debug.Log("Trigggerlandınız" + collision.gameObject.name);
+        overlapAmount = Vector3.Distance(collision.gameObject.transform.position, this.transform.position);
+        overlapAmount = 100 - overlapAmount;
+        Debug.Log("iki Obje Arası uzaklık" + overlapAmount);
     }
     void LateUpdate() // otherwise, visual lag can make for inconsistent collision checking.
     {

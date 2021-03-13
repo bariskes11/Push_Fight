@@ -128,3 +128,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxDistance: 50
   mindistance: 10
+  overlapAmount: 0

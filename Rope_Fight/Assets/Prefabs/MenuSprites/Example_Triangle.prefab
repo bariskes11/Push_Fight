@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 1850430048197861341}
   - component: {fileID: 1850430048197861342}
   - component: {fileID: 393744779}
+  - component: {fileID: 8368259229302879292}
+  - component: {fileID: 2976753562877375150}
   m_Layer: 9
   m_Name: Example_Triangle
   m_TagString: Background
@@ -99,5 +101,41 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 110, y: 110}
+  m_Size: {x: 100, y: 100}
   m_EdgeRadius: 0
+--- !u!114 &8368259229302879292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850430048197861328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c84488003fa51a2489216c7f809ee08f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistance: 50
+  mindistance: 10
+  overlapAmount: 0
+--- !u!50 &2976753562877375150
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1850430048197861328}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
