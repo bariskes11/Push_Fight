@@ -10,15 +10,17 @@ public class Game_Play_Manager : MonoBehaviour
     public bool Game_Finished = false;
     public GameObject gameStartPanel;
     private List<OverLapChecker> GenerateTotalList;
+    
     public Text CurentFillAmount;
+    public GameObject QuestionPanel;
     public float CurrentTimeLeft;
 
     public float CurrentOveralAmount;
     // Start is called before the first frame update
     void Start()
     {
-        ShowChallenge();
-
+        QuestionPanel.SetActive(false);
+        gameStartPanel.SetActive(true);
 
     }
     public void StartGame()
@@ -28,8 +30,9 @@ public class Game_Play_Manager : MonoBehaviour
     }
     public void ShowChallenge()
     {
-        GenerateTotalList = GameObject.FindObjectsOfType<OverLapChecker>().ToList(); 
-       
+        GenerateTotalList = GameObject.FindObjectsOfType<OverLapChecker>().ToList();
+        QuestionPanel.SetActive(false);
+
     }
     // Update is called once per frame
     void Update()
@@ -41,6 +44,6 @@ public class Game_Play_Manager : MonoBehaviour
     public void SetTotalAmounth()
     {
         CurrentOveralAmount = GenerateTotalList.Sum(x => x.overlapAmount) / GenerateTotalList.Count;
-        CurentFillAmount.text = CurrentOveralAmount.ToString("###.##")+ " %";
+        CurentFillAmount.text = CurrentOveralAmount.ToString("###.#")+ " %";
     }
 }

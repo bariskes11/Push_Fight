@@ -15,6 +15,7 @@ public class CameraMovements : MonoBehaviour
     private GameObject currentPlayerToZoom;
     public bool QuestionTime = false;
     public bool QuestionResulted = false;
+    public float QuestionTimeOut=5F;
     Camera c;
     // Start is called before the first frame update
     void Start()
@@ -52,19 +53,21 @@ public class CameraMovements : MonoBehaviour
     void AskQuestion()
     {
         QuestionTime = true;
-        Debug.Log("Soru Geldi");
         StartCoroutine(WaitForAnswerTimeout());
     }
 
     IEnumerator WaitForAnswerTimeout()
     {
-        yield return new WaitForSeconds(5F);
+        yield return new WaitForSeconds(QuestionTimeOut);
         CurrentPlayerIndex++;
         if (CurrentPlayerIndex > PlayersList.Count()-1)
         {
             CurrentPlayerIndex =0;
         }
+        
         playerObj = PlayersList.Where(x => x.PlayerIndex == CurrentPlayerIndex).FirstOrDefault().gameObject;
+        playerObj.GetComponentInChildren<QuestionCreator>().CreateQuestion();
+        gm.ShowChallenge();
         QuestionTime = false;
     }
 }
