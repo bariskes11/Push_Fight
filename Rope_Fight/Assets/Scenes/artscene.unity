@@ -202,7 +202,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 3.469, y: -25.221, z: -1.2490001}
 --- !u!1001 &224179310
 PrefabInstance:
@@ -695,7 +695,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 56.085003, y: -38.062, z: -7.129}
 --- !u!1001 &3719387151179955942
 PrefabInstance:
@@ -969,7 +969,7 @@ PrefabInstance:
     - target: {fileID: 5642789482308600330, guid: 48388c0ab246f04489c2c7d0d61b8074,
         type: 3}
       propertyPath: m_Name
-      value: Red_SandBag
+      value: Red_SandBag2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 48388c0ab246f04489c2c7d0d61b8074, type: 3}
