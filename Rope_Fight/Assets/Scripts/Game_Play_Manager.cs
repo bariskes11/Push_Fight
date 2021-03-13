@@ -6,7 +6,7 @@ public class Game_Play_Manager : MonoBehaviour
 {
     public bool GameStarted = false;
     public bool Game_Finished = false;
-    
+    public GameObject gameStartPanel;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +16,7 @@ public class Game_Play_Manager : MonoBehaviour
     public void StartGame()
     {
         GameStarted = true;
-
+        gameStartPanel.SetActive(false);
     }
 
     // Update is called once per frame
