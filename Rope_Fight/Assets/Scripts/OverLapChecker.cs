@@ -19,7 +19,7 @@ public class OverLapChecker : MonoBehaviour
     {
         overlapAmount = Vector3.Distance(collision.gameObject.transform.position, this.transform.position);
         overlapAmount = 100 - overlapAmount;
-        Debug.Log("iki Obje Arası uzaklık" + overlapAmount);
+        
         gm.SetTotalAmounth();
     }
     //void LateUpdate() // otherwise, visual lag can make for inconsistent collision checking.

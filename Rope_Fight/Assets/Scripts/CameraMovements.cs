@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraMovements : MonoBehaviour
 {
@@ -58,16 +59,18 @@ public class CameraMovements : MonoBehaviour
 
     IEnumerator WaitForAnswerTimeout()
     {
+        playerObj = PlayersList.Where(x => x.PlayerIndex == CurrentPlayerIndex).FirstOrDefault().gameObject;
+       var rslt= playerObj.GetComponentInChildren<QuestionCreator>().CreateQuestion();
+        gm.ShowChallenge(rslt);
         yield return new WaitForSeconds(QuestionTimeOut);
+        playerObj.GetComponentInChildren<QuestionCreator>().CloseQuestion();
+        gm.SetTotalAmounth();
         CurrentPlayerIndex++;
         if (CurrentPlayerIndex > PlayersList.Count()-1)
         {
             CurrentPlayerIndex =0;
         }
         
-        playerObj = PlayersList.Where(x => x.PlayerIndex == CurrentPlayerIndex).FirstOrDefault().gameObject;
-        playerObj.GetComponentInChildren<QuestionCreator>().CreateQuestion();
-        gm.ShowChallenge();
         QuestionTime = false;
     }
 }
