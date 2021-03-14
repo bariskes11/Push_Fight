@@ -12,7 +12,7 @@ public class QuestionCreator : MonoBehaviour
     private Sprite[] needed_Doted_Sprites;
     private void Start()
     {
-        spritesInChildren = this.GetComponentsInChildren<SpriteRenderer>().Where(x=>x.name.Contains("item")).OrderBy(x=>x.name).ToArray();
+        spritesInChildren = this.GetComponentsInChildren<SpriteRenderer>().Where(x => x.name.Contains("item")).OrderBy(x => x.name).ToArray();
         GenerateRandom();
         foreach (var item in spritesInChildren)
         {
@@ -31,18 +31,20 @@ public class QuestionCreator : MonoBehaviour
             selectedIndexes.Add(Rand);
         }
     }
-    public  Sprite[] CreateQuestion()
+    public int[] CreateQuestion()
     {
         int i = 0;
+        int[] r = new int[spritesInChildren.Length];
         needed_Doted_Sprites = new Sprite[spritesInChildren.Length];
         foreach (var item in spritesInChildren)
         {
             item.enabled = true;
             item.sprite = soruSablonu.shapes_Normal[selectedIndexes.ElementAt(i)];
-            needed_Doted_Sprites[i]=(soruSablonu.shapes_dotted[selectedIndexes.ElementAt(i)]);
+            item.tag = soruSablonu.Tags[selectedIndexes.ElementAt(i)];
+            r[i] = selectedIndexes.ElementAt(i);
             i++;
         }
-        return needed_Doted_Sprites;
+        return r;
     }
     public void CloseQuestion()
     {

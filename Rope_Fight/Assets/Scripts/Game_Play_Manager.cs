@@ -77,7 +77,7 @@ public class Game_Play_Manager : MonoBehaviour
         GameStarted = true;
         gameStartPanel.SetActive(false);
     }
-    public void ShowChallenge(Sprite[] Doted_Images)
+    public void ShowChallenge(int[] Item_Indexes)
     {
 
         
@@ -93,7 +93,8 @@ public class Game_Play_Manager : MonoBehaviour
         int i = 0;
         foreach (var item in GenerateTotalList)
         {
-            item.GetComponent<Image>().sprite = Doted_Images[i];
+            item.GetComponent<Image>().sprite = soruSablonu.shapes_dotted[Item_Indexes[i]];
+            item.GetComponent<Image>().tag= soruSablonu.Tags[Item_Indexes[i]];
             i++;
         }
     }

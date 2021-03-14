@@ -17,10 +17,13 @@ public class OverLapChecker : MonoBehaviour
     public float overlapAmount;
     private void OnTriggerStay2D(Collider2D collision)
     {
-        overlapAmount = Vector3.Distance(collision.gameObject.transform.position, this.transform.position);
-        overlapAmount = 100 - overlapAmount;
-
-        gm.SetTotalAmounth();
+        if (collision.tag == this.tag)
+        {
+            overlapAmount = Vector3.Distance(collision.gameObject.transform.position, this.transform.position);
+            overlapAmount = 100 - overlapAmount;
+            overlapAmount= Mathf.Clamp(overlapAmount, 0, 100);
+            gm.SetTotalAmounth();
+        }
     }
 
     public void ResetFillAmounth()
