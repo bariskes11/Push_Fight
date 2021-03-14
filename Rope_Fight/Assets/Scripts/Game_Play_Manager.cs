@@ -13,7 +13,8 @@ public class Game_Play_Manager : MonoBehaviour
     public GameObject gameStartPanel;
     private List<OverLapChecker> GenerateTotalList;
     private List<ObjectMovement> MovebleObjects;
-
+    public ParticleSystem Success_Particle;
+    public ParticleSystem Fail_Particle;
     public Text CurentFillAmount;
     public GameObject QuestionPanel;
     public float CurrentTimeLeft;
@@ -26,6 +27,12 @@ public class Game_Play_Manager : MonoBehaviour
     public bool AskingQuestion = false;
     public Color[] WarnColors;
     public Image FillPart;
+    // genel duruma göre ileri veya geri gideceğiz
+    public float TotalForce;
+
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -59,6 +66,11 @@ public class Game_Play_Manager : MonoBehaviour
             }
         }
 
+        foreach (var item in GenerateTotalList)
+        {
+            item.ResetFillAmounth();
+        }
+
     }
     public void StartGame()
     {
@@ -73,9 +85,10 @@ public class Game_Play_Manager : MonoBehaviour
         CurrentTimeLeft = Timer_Per_Question;
         AskingQuestion = true;
         CurrentOveralAmount = 0;
+        CurentFillAmount.text= "0 %";
         questionAskedTime = DateTime.Now;
         QuestionPanel.SetActive(true);
-        StartCoroutine(start_Timer());
+        start_Timer();
         GenerateTotalList = GameObject.FindObjectsOfType<OverLapChecker>().OrderBy(x => x.name).ToList();
         int i = 0;
         foreach (var item in GenerateTotalList)
@@ -85,18 +98,10 @@ public class Game_Play_Manager : MonoBehaviour
         }
     }
 
-    IEnumerator start_Timer()
+    void start_Timer()
     {
         Timer_Slider.value = Timer_Per_Question;
         CurrentTimeLeft = Timer_Per_Question;
-        while (Timer_Slider.value > 0 && CurrentOveralAmount < MinimumAmouthForAnswer)
-        {
-            yield return new WaitForSeconds(.1F);
-            Timer_Slider.value = CurrentTimeLeft;
-            setColor();
-            
-        }
-        AskingQuestion = false;
     }
     private void setColor()
     {
@@ -126,7 +131,25 @@ public class Game_Play_Manager : MonoBehaviour
         if (AskingQuestion)
         {
             var elapsedSecond = (DateTime.Now - questionAskedTime).TotalSeconds;
-            CurrentTimeLeft =Timer_Per_Question- float.Parse( elapsedSecond.ToString());
+            CurrentTimeLeft =Mathf.Clamp( Timer_Per_Question- float.Parse( elapsedSecond.ToString())
+                ,0,Timer_Per_Question);
+            Timer_Slider.value = CurrentTimeLeft;
+            setColor();
+            SetTotalAmounth();
+            Debug.Log("Doluluk Yüzdesi:" + CurrentOveralAmount + " Eşik Deger:" + MinimumAmouthForAnswer);
+            if (CurrentOveralAmount > MinimumAmouthForAnswer)
+            {
+                AskingQuestion = false;
+                Success_Particle.Simulate(0.0f, true, true);
+                Success_Particle.Play();
+            }
+            else if (Timer_Slider.value == 0)
+            {
+                AskingQuestion = false;
+                Fail_Particle.Simulate(0.0f, true, true);
+                Fail_Particle.Play();
+                
+            }
         }
 
         if (GameStarted && GenerateTotalList != null)

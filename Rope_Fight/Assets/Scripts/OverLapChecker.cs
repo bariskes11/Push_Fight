@@ -14,13 +14,18 @@ public class OverLapChecker : MonoBehaviour
         gm = GameObject.FindObjectOfType<Game_Play_Manager>();
     }
     float overlapDistance;
-   public float overlapAmount;
+    public float overlapAmount;
     private void OnTriggerStay2D(Collider2D collision)
     {
         overlapAmount = Vector3.Distance(collision.gameObject.transform.position, this.transform.position);
         overlapAmount = 100 - overlapAmount;
-        
+
         gm.SetTotalAmounth();
+    }
+
+    public void ResetFillAmounth()
+    {
+        overlapAmount = 0;
     }
     //void LateUpdate() // otherwise, visual lag can make for inconsistent collision checking.
     //{
@@ -39,7 +44,7 @@ public class OverLapChecker : MonoBehaviour
     //    if (backgroundCol != null)
     //    {
     //        overlapDistance = Vector3.Distance(this.transform.position, backgroundCol.gameObject.transform.position);
-            
+
     //        //   float CalcDistance = Mathf.Clamp(overlapDistance, mindistance, maxDistance);
     //        float x = mindistance * 100 / overlapDistance;
     //        Debug.Log(x);
