@@ -260,6 +260,7 @@ GameObject:
   - component: {fileID: 1320346901}
   - component: {fileID: 1320346903}
   - component: {fileID: 5313621503017677795}
+  - component: {fileID: 231790178}
   m_Layer: 0
   m_Name: RedPly
   m_TagString: Untagged
@@ -326,6 +327,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DarbeKuvveti: 5
 --- !u!114 &5313621503017677795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2838526736222189001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 368e26970c281544c87317ae35b278e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerFallen: 0
+--- !u!114 &231790178
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -682,7 +696,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c99c2e100c085a749bc9690dfa838ae7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DarbeKuvveti: 5
+  DarbeKuvveti: 3
 --- !u!1 &5093507691531070644
 GameObject:
   m_ObjectHideFlags: 0

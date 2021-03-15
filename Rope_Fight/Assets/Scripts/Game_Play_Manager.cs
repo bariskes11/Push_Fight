@@ -74,18 +74,22 @@ public class Game_Play_Manager : MonoBehaviour
     {
         if (isRed) // Bize Çarpan bir yastık.
         {
-            GameObject pol = Instantiate(Red_Pole);
-            Vector3 playerPos= PlayerList.Where(x => x.GetComponent<PlayerCurrentStatus>().PlayerFallen == false).FirstOrDefault().transform.position;
+            Vector3 playerPos = PlayerList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).FirstOrDefault().transform.position;
+            GameObject pol = Instantiate(Red_Pole,playerPos,Quaternion.identity);
+            
             playerPos.y += 2.5F;
             pol.transform.position = playerPos;
-
+            pol.GetComponent<Animator>().SetInteger("PlayKick_Anim", 1);
+            Destroy(pol, 3F);
         }
         else // düşlmana çarpan bir yastık
         {
-            GameObject pol = Instantiate(Blue_Pole);
-            Vector3 playerPos = EnemyList.Where(x => x.GetComponent<PlayerCurrentStatus>().PlayerFallen == false).FirstOrDefault().transform.position;
+            Vector3 playerPos = EnemyList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).FirstOrDefault().transform.position;
+            GameObject pol = Instantiate(Blue_Pole, playerPos, Quaternion.identity);
             playerPos.y += 2.5F;
             pol.transform.position = playerPos;
+            pol.GetComponent<Animator>().SetInteger("PlayKick_Anim", 1);
+            Destroy(pol, 3F);
         }
     }
 
@@ -183,19 +187,22 @@ public class Game_Play_Manager : MonoBehaviour
             SetTotalAmounth();
             if (CurrentOveralAmount > MinimumAmouthForAnswer)
             {
-                AskingQuestion = false;
+                
                 Success_Particle.Simulate(0.0f, true, true);
                 Success_Particle.Play();
                 PlayerForce += Bonus_Force_Per_Question;
-
+                InstantiatePoleAndKickPlayer(false);
+                AskingQuestion = false;
                 // Enemy Hizasunda bir Pole Oluşturup Animasyon Yaptırarap Enemy yi düşür.
             }
             else if (Timer_Slider.value == 0)
             {
-                AskingQuestion = false;
+                
                 Fail_Particle.Simulate(0.0f, true, true);
                 Fail_Particle.Play();
                 PlayerForce -= Bonus_Force_Per_Question;
+                InstantiatePoleAndKickPlayer(true);
+                AskingQuestion = false;
                 // Player Hizasında bir Pole Oluşturup Animasyon Yaptorarak  Player I
 
             }
