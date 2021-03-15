@@ -27,8 +27,7 @@ public class Game_Play_Manager : MonoBehaviour
     public bool AskingQuestion = false;
     public Color[] WarnColors;
     public Image FillPart;
-    // genel duruma göre ileri veya geri gideceğiz
-    public float TotalForce;
+    private float TotalForce;
     public Rigidbody Force_ApplyField;
     public GameObject Rope;
     public float Bonus_Force_Per_Question;
@@ -37,6 +36,9 @@ public class Game_Play_Manager : MonoBehaviour
     public GameObject[] EnemyList;
     public GameObject[] PlayerList;
     private Vector3 Rope_Position;
+    public GameObject Red_Pole;
+    public GameObject Blue_Pole;
+
     private void LateUpdate()
     {
         TotalForce = PlayerForce - EnemyForce;
@@ -67,6 +69,26 @@ public class Game_Play_Manager : MonoBehaviour
         Timer_Slider.maxValue = Timer_Per_Question;
 
     }
+
+    private void InstantiatePoleAndKickPlayer(bool isRed)
+    {
+        if (isRed) // Bize Çarpan bir yastık.
+        {
+            GameObject pol = Instantiate(Red_Pole);
+            Vector3 playerPos= PlayerList.Where(x => x.GetComponent<PlayerCurrentStatus>().PlayerFallen == false).FirstOrDefault().transform.position;
+            playerPos.y += 2.5F;
+            pol.transform.position = playerPos;
+
+        }
+        else // düşlmana çarpan bir yastık
+        {
+            GameObject pol = Instantiate(Blue_Pole);
+            Vector3 playerPos = EnemyList.Where(x => x.GetComponent<PlayerCurrentStatus>().PlayerFallen == false).FirstOrDefault().transform.position;
+            playerPos.y += 2.5F;
+            pol.transform.position = playerPos;
+        }
+    }
+
     private void SetPositions()
     {
 
