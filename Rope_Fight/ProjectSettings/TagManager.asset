@@ -8,6 +8,8 @@ TagManager:
   - Kare
   - Daire
   - Ucgen
+  - Pole
+  - Enemy
   layers:
   - Default
   - TransparentFX

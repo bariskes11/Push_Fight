@@ -29,13 +29,25 @@ public class Game_Play_Manager : MonoBehaviour
     public Image FillPart;
     // genel duruma göre ileri veya geri gideceğiz
     public float TotalForce;
+    public GameObject Rope;
 
-
-
+    public float PlayerForce = 30F;
+    public float EnemyForce = 30F;
+    public GameObject[] EnemyList;
+    public GameObject[] PlayerList;
+    private Vector3 Rope_Position;
+    private void LateUpdate()
+    {
+        Rope_Position = Rope.transform.position;
+        Rope_Position.z = PlayerForce - EnemyForce;
+        Rope.transform.position += Rope_Position * Time.deltaTime;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+        EnemyList = GameObject.FindGameObjectsWithTag("Enemy");
+        PlayerList = GameObject.FindGameObjectsWithTag("Player");
         GenerateTotalList = GameObject.FindObjectsOfType<OverLapChecker>().ToList();
         MovebleObjects = GameObject.FindObjectsOfType<ObjectMovement>().ToList();
         SetPositions();
@@ -80,12 +92,12 @@ public class Game_Play_Manager : MonoBehaviour
     public void ShowChallenge(int[] Item_Indexes)
     {
 
-        
+
         SetPositions();
         CurrentTimeLeft = Timer_Per_Question;
         AskingQuestion = true;
         CurrentOveralAmount = 0;
-        CurentFillAmount.text= "0 %";
+        CurentFillAmount.text = "0 %";
         questionAskedTime = DateTime.Now;
         QuestionPanel.SetActive(true);
         start_Timer();
@@ -94,7 +106,7 @@ public class Game_Play_Manager : MonoBehaviour
         foreach (var item in GenerateTotalList)
         {
             item.GetComponent<Image>().sprite = soruSablonu.shapes_dotted[Item_Indexes[i]];
-            item.GetComponent<Image>().tag= soruSablonu.Tags[Item_Indexes[i]];
+            item.GetComponent<Image>().tag = soruSablonu.Tags[Item_Indexes[i]];
             i++;
         }
     }
@@ -106,7 +118,7 @@ public class Game_Play_Manager : MonoBehaviour
     }
     private void setColor()
     {
-        float val = ((100 * CurrentTimeLeft) / Timer_Per_Question)/100;
+        float val = ((100 * CurrentTimeLeft) / Timer_Per_Question) / 100;
         if (val >= 0.75F)
         {
             FillPart.color = WarnColors[0];
@@ -132,8 +144,8 @@ public class Game_Play_Manager : MonoBehaviour
         if (AskingQuestion)
         {
             var elapsedSecond = (DateTime.Now - questionAskedTime).TotalSeconds;
-            CurrentTimeLeft =Mathf.Clamp( Timer_Per_Question- float.Parse( elapsedSecond.ToString())
-                ,0,Timer_Per_Question);
+            CurrentTimeLeft = Mathf.Clamp(Timer_Per_Question - float.Parse(elapsedSecond.ToString())
+                , 0, Timer_Per_Question);
             Timer_Slider.value = CurrentTimeLeft;
             setColor();
             SetTotalAmounth();
@@ -149,7 +161,7 @@ public class Game_Play_Manager : MonoBehaviour
                 AskingQuestion = false;
                 Fail_Particle.Simulate(0.0f, true, true);
                 Fail_Particle.Play();
-                
+
             }
         }
 

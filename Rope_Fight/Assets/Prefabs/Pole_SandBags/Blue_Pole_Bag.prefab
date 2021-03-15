@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3576314365932528735}
   m_Layer: 0
   m_Name: Blue_Pole_Bag
-  m_TagString: Untagged
+  m_TagString: Pole
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 4364943541161657996}
   m_Layer: 0
   m_Name: Blue_Sandbag (1)
-  m_TagString: Untagged
+  m_TagString: Pole
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -155,7 +155,7 @@ GameObject:
   - component: {fileID: 4708483331658293351}
   m_Layer: 0
   m_Name: pole (1)
-  m_TagString: Untagged
+  m_TagString: Pole
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
