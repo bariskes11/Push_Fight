@@ -16,6 +16,7 @@ public class CameraMovements : MonoBehaviour
     private GameObject currentPlayerToZoom;
     public bool QuestionTime = false;
     public bool QuestionResulted = false;
+    public bool Enabled_Camera_Zoom = true;
     public float QuestionTimeOut=5F;
     Camera c;
     // Start is called before the first frame update
@@ -43,13 +44,24 @@ public class CameraMovements : MonoBehaviour
             transform.Translate(Vector3.right * Time.deltaTime);
             return;
         }
-        PlayerPosition = Vector3.MoveTowards(c.transform.position, playerObj.transform.position + playerOffset, .1F);
-        //PlayerPosition = playerObj.transform.position + playerOffset;
-        if (c.transform.position == playerObj.transform.position + playerOffset && !QuestionTime)
+        if (Enabled_Camera_Zoom)
         {
-            AskQuestion();
+            PlayerPosition = Vector3.MoveTowards(c.transform.position, playerObj.transform.position + playerOffset, .1F);
+            //PlayerPosition = playerObj.transform.position + playerOffset;
+            if (c.transform.position == playerObj.transform.position + playerOffset && !QuestionTime)
+            {
+                AskQuestion();
+            }
+            c.transform.position = PlayerPosition;
         }
-        c.transform.position = PlayerPosition;
+        else
+        {
+            if (!QuestionTime)
+            {
+                AskQuestion();
+            }
+        }
+        
     }
     void AskQuestion()
     {

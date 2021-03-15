@@ -41,17 +41,19 @@ public class Game_Play_Manager : MonoBehaviour
 
     private void LateUpdate()
     {
-        TotalForce = PlayerForce - EnemyForce;
-        Rope_Position = Rope.transform.position;
-        if(TotalForce!=0)
+        if (GameStarted)
         {
-            Rope_Position.z += TotalForce*Time.deltaTime;
-        }
+            TotalForce = PlayerForce - EnemyForce;
+            Rope_Position = Rope.transform.position;
+            if (TotalForce != 0)
+            {
+                Rope_Position.z += TotalForce * Time.deltaTime;
+            }
 
-        
-        Rope.transform.position = Rope_Position;
-        //Force_ApplyField.AddForce(Vector3.forward * TotalForce * Time.deltaTime,ForceMode.VelocityChange);
-        
+
+            Rope.transform.position = Rope_Position;
+            //Force_ApplyField.AddForce(Vector3.forward * TotalForce * Time.deltaTime,ForceMode.VelocityChange);
+        }
         
     }
 
@@ -110,6 +112,7 @@ public class Game_Play_Manager : MonoBehaviour
             {
                 RectTransform r = item.GetComponent<RectTransform>();
                 r.localPosition = initialPositions.ElementAt(i);
+                
                 i++;
             }
         }
@@ -138,11 +141,18 @@ public class Game_Play_Manager : MonoBehaviour
         QuestionPanel.SetActive(true);
         start_Timer();
         GenerateTotalList = GameObject.FindObjectsOfType<OverLapChecker>().OrderBy(x => x.name).ToList();
+        List<ObjectMovement> moveable_objs = GameObject.FindObjectsOfType<ObjectMovement>().OrderBy(x => x.tag).ToList();
         int i = 0;
         foreach (var item in GenerateTotalList)
         {
             item.GetComponent<Image>().sprite = soruSablonu.shapes_dotted[Item_Indexes[i]];
             item.GetComponent<Image>().tag = soruSablonu.Tags[Item_Indexes[i]];
+            i++;
+        }
+        i = 0;
+        foreach (var item in moveable_objs)
+        {
+            item.GetComponent<Image>().color = soruSablonu.shape_Colors[Item_Indexes[i]];
             i++;
         }
     }
@@ -190,7 +200,8 @@ public class Game_Play_Manager : MonoBehaviour
                 
                 Success_Particle.Simulate(0.0f, true, true);
                 Success_Particle.Play();
-                PlayerForce += Bonus_Force_Per_Question;
+                PlayerForce -= Bonus_Force_Per_Question;
+                EnemyForce += Bonus_Force_Per_Question;
                 InstantiatePoleAndKickPlayer(false);
                 AskingQuestion = false;
                 // Enemy Hizasunda bir Pole Oluşturup Animasyon Yaptırarap Enemy yi düşür.
@@ -200,7 +211,8 @@ public class Game_Play_Manager : MonoBehaviour
                 
                 Fail_Particle.Simulate(0.0f, true, true);
                 Fail_Particle.Play();
-                PlayerForce -= Bonus_Force_Per_Question;
+                EnemyForce -= Bonus_Force_Per_Question;
+                PlayerForce += Bonus_Force_Per_Question;
                 InstantiatePoleAndKickPlayer(true);
                 AskingQuestion = false;
                 // Player Hizasında bir Pole Oluşturup Animasyon Yaptorarak  Player I

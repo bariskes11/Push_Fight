@@ -8,4 +8,5 @@ public class QuestionScriptable : ScriptableObject
     public Sprite[] shapes_dotted;
     public Sprite[] shapes_Normal;
     public string[] Tags;
+    public Color[] shape_Colors;
 }
