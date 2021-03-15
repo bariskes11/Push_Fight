@@ -256,6 +256,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2838526736222189006}
+  - component: {fileID: 1320346902}
+  - component: {fileID: 1320346901}
+  - component: {fileID: 1320346903}
   m_Layer: 0
   m_Name: RedPly
   m_TagString: Untagged
@@ -278,6 +281,48 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!54 &1320346902
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2838526736222189001}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
+--- !u!136 &1320346901
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2838526736222189001}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.16680165
+  m_Height: 0.7257978
+  m_Direction: 1
+  m_Center: {x: -0.0045289546, y: 0.3535952, z: 0.11223136}
+--- !u!114 &1320346903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2838526736222189001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c99c2e100c085a749bc9690dfa838ae7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3079199959163942410
 GameObject:
   m_ObjectHideFlags: 0
@@ -567,8 +612,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5629639874429343061}
   - component: {fileID: 5002284290521436140}
-  - component: {fileID: 7568134080222305809}
-  - component: {fileID: 8795464504790945003}
   - component: {fileID: 850667009}
   m_Layer: 0
   m_Name: red_character
@@ -612,36 +655,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!54 &7568134080222305809
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5002284290521436143}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
---- !u!136 &8795464504790945003
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5002284290521436143}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 56.204536
-  m_Height: 245.18102
-  m_Direction: 1
-  m_Center: {x: 2.6616654, y: 115.94824, z: 37.730614}
 --- !u!114 &850667009
 MonoBehaviour:
   m_ObjectHideFlags: 0

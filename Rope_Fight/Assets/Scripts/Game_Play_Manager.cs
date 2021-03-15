@@ -29,8 +29,9 @@ public class Game_Play_Manager : MonoBehaviour
     public Image FillPart;
     // genel duruma göre ileri veya geri gideceğiz
     public float TotalForce;
+    public Rigidbody Force_ApplyField;
     public GameObject Rope;
-
+    public float Bonus_Force_Per_Question;
     public float PlayerForce = 30F;
     public float EnemyForce = 30F;
     public GameObject[] EnemyList;
@@ -38,9 +39,18 @@ public class Game_Play_Manager : MonoBehaviour
     private Vector3 Rope_Position;
     private void LateUpdate()
     {
+        TotalForce = PlayerForce - EnemyForce;
         Rope_Position = Rope.transform.position;
-        Rope_Position.z = PlayerForce - EnemyForce;
-        Rope.transform.position += Rope_Position * Time.deltaTime;
+        if(TotalForce!=0)
+        {
+            Rope_Position.z += TotalForce*Time.deltaTime;
+        }
+
+        
+        Rope.transform.position = Rope_Position;
+        //Force_ApplyField.AddForce(Vector3.forward * TotalForce * Time.deltaTime,ForceMode.VelocityChange);
+        
+        
     }
 
     // Start is called before the first frame update
@@ -149,18 +159,22 @@ public class Game_Play_Manager : MonoBehaviour
             Timer_Slider.value = CurrentTimeLeft;
             setColor();
             SetTotalAmounth();
-            Debug.Log("Doluluk Yüzdesi:" + CurrentOveralAmount + " Eşik Deger:" + MinimumAmouthForAnswer);
             if (CurrentOveralAmount > MinimumAmouthForAnswer)
             {
                 AskingQuestion = false;
                 Success_Particle.Simulate(0.0f, true, true);
                 Success_Particle.Play();
+                PlayerForce += Bonus_Force_Per_Question;
+
+                // Enemy Hizasunda bir Pole Oluşturup Animasyon Yaptırarap Enemy yi düşür.
             }
             else if (Timer_Slider.value == 0)
             {
                 AskingQuestion = false;
                 Fail_Particle.Simulate(0.0f, true, true);
                 Fail_Particle.Play();
+                PlayerForce -= Bonus_Force_Per_Question;
+                // Player Hizasında bir Pole Oluşturup Animasyon Yaptorarak  Player I
 
             }
         }
