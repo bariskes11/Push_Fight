@@ -67,7 +67,20 @@ public class Game_Play_Manager : MonoBehaviour
             Rope.transform.position = Rope_Position;
             //Force_ApplyField.AddForce(Vector3.forward * TotalForce * Time.deltaTime,ForceMode.VelocityChange);
         }
+    
+    }
+    private void Update()
+    {
+        if (AskingQuestion)
+        {
+            QuestionAlgorithms();
+        }
+        CheckGameStatus();
+        if (GameStarted && GenerateTotalList != null)
+        {
 
+            CurrentOveralAmount = GenerateTotalList.Sum(x => x.overlapAmount) / GenerateTotalList.Count;
+        }
     }
 
     public void SetGameFinishStatus()
@@ -78,15 +91,15 @@ public class Game_Play_Manager : MonoBehaviour
         Game_Finish_Panel.GetComponent<Animator>().SetInteger("Game_Finished", 1);
         if (PlayerCount>0)
         {
-            loseImage.GetComponent<SpriteRenderer>().enabled = false;
-            winImage.GetComponent<SpriteRenderer>().enabled = true;
+            loseImage.GetComponent<Image>().enabled = false;
+            winImage.GetComponent<Image>().enabled = true;
             NexLevel.gameObject.SetActive(true);
             currentState = Win_Lost.Win;
         }
         else if (EnemyCount >0)
         {
-            loseImage.GetComponent<SpriteRenderer>().enabled = true;
-            winImage.GetComponent<SpriteRenderer>().enabled = false;
+            loseImage.GetComponent<Image>().enabled = true;
+            winImage.GetComponent<Image>().enabled = false;
             NexLevel.gameObject.SetActive(false);
             currentState = Win_Lost.Lost;
         }
@@ -231,21 +244,7 @@ public class Game_Play_Manager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (AskingQuestion)
-        {
-            QuestionAlgorithms();
-        }
-        CheckGameStatus();
-
-        if (GameStarted && GenerateTotalList != null)
-        {
-
-            CurrentOveralAmount = GenerateTotalList.Sum(x => x.overlapAmount) / GenerateTotalList.Count;
-        }
-        
-    }
+   
     public void FinishlineTouchDown(string Tag)
     {
         if (Tag == "Player")
@@ -262,6 +261,7 @@ public class Game_Play_Manager : MonoBehaviour
     int EnemyCount;
     int PlayerCount;
     private Win_Lost currentState;
+    bool finishShown = false;
     void CheckGameStatus()
     {
         if (currentState != Win_Lost.InGame)
@@ -274,6 +274,12 @@ public class Game_Play_Manager : MonoBehaviour
         if (EnemyCount == 0 || PlayerCount == 0)
         {
             Game_Finished = true;
+            if (!finishShown)
+            {
+                finishShown = true;
+                SetGameFinishStatus();
+
+            }
         }
         if (EnemyCount == 0)
         {
@@ -305,7 +311,7 @@ public class Game_Play_Manager : MonoBehaviour
             AskingQuestion = false;
             // Enemy Hizasunda bir Pole Oluşturup Animasyon Yaptırarap Enemy yi düşür.
         }
-        else if (Timer_Slider.value == 0)
+        else if (Timer_Slider.value <= 0.1F)
         {
 
             Fail_Particle.Simulate(0.0f, true, true);

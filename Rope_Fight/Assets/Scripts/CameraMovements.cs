@@ -18,8 +18,7 @@ public class CameraMovements : MonoBehaviour
     public bool QuestionTime = false;
     public bool QuestionResulted = false;
     public bool Enabled_Camera_Zoom = true;
-    public float QuestionTimeOut=5F;
-    public bool fired_GameFinishedEvents = false;
+    public float QuestionTimeOut = 5F;
     Camera c;
     // Start is called before the first frame update
     void Start()
@@ -44,11 +43,6 @@ public class CameraMovements : MonoBehaviour
         {
             transform.LookAt(finisline.transform);
             transform.Translate(Vector3.right * Time.deltaTime);
-            if(!fired_GameFinishedEvents)
-            {
-                gm.SetGameFinishStatus();
-                fired_GameFinishedEvents = true;
-            }
             return;
         }
         if (Enabled_Camera_Zoom)
@@ -68,32 +62,33 @@ public class CameraMovements : MonoBehaviour
                 AskQuestion();
             }
         }
-        
+
     }
     void AskQuestion()
     {
         QuestionTime = true;
         StartCoroutine(WaitForAnswerTimeout());
+       
     }
 
     IEnumerator WaitForAnswerTimeout()
     {
-       var playerObj =  PlayersList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).OrderBy(x => x.name).FirstOrDefault();
+        var playerObj = PlayersList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).OrderBy(x => x.name).FirstOrDefault();
         if (playerObj == null)
         {
-            QuestionTime = false;
+          
             yield return new WaitForSeconds(0);
         }
-        
-       var rslt= playerObj.GetComponentInChildren<QuestionCreator>().CreateQuestion();
+ 
+        var rslt = playerObj.GetComponentInChildren<QuestionCreator>().CreateQuestion();
         gm.ShowChallenge(rslt);
         yield return new WaitForSeconds(QuestionTimeOut);
         playerObj.GetComponentInChildren<QuestionCreator>().CloseQuestion();
         gm.SetTotalAmounth();
         CurrentPlayerIndex++;
-        if (CurrentPlayerIndex > PlayersList.Count()-1)
+        if (CurrentPlayerIndex > PlayersList.Count() - 1)
         {
-            CurrentPlayerIndex =0;
+            CurrentPlayerIndex = 0;
         }
         QuestionTime = false;
     }
