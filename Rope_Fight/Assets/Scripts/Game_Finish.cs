@@ -12,6 +12,7 @@ public class Game_Finish : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Finish_line Triggered" + other.gameObject.tag);
         if (other.gameObject.tag == "Player")
         {
             // show lossse panel
