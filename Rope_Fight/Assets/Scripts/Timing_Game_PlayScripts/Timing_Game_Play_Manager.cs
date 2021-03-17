@@ -90,7 +90,7 @@ public class Timing_Game_Play_Manager : MonoBehaviour
             {
                 item.GetComponentInChildren<Animator>().SetTrigger("Push_Rope");
             }
-            MoveMultiPlayer = 1;
+            MoveMultiPlayer = -1;
         }
         else if (Mathf.Abs(Result) >= 3) // çok kötü 
         {
@@ -98,7 +98,11 @@ public class Timing_Game_Play_Manager : MonoBehaviour
             {
                 item.GetComponentInChildren<Animator>().SetTrigger("Pull_Back");
             }
-            MoveMultiPlayer = -1;
+            MoveMultiPlayer = 1;
+        }
+        else
+        {
+            MoveMultiPlayer = 0;
         }
         StartCoroutine(WaitFornextPlayer());
     }
@@ -114,6 +118,8 @@ public class Timing_Game_Play_Manager : MonoBehaviour
         else
             CurrentPlayerIndex = 0;
         ActivateCurrentPlayer(CurrentPlayerIndex);
+        yield return new WaitForSeconds(2F);
+        MoveMultiPlayer = 0;
 
 
     }

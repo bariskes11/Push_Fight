@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MoveDistance: 6
-  Turn_Speed: 6
+  Turn_Speed: 4
   ok: {fileID: 4599057527414957008}
   Pressed: 0
 --- !u!1 &4599057527414957008
