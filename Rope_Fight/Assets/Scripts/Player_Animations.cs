@@ -16,6 +16,15 @@ public class Player_Animations : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         rgd_body = GetComponent<Rigidbody>();
         status = GetComponent<PlayerCurrentStatus>();
+        if (animator.transform.tag == "Player")
+        {
+            animator.transform.Rotate(0, -90F, 0);
+        }
+        else
+        {
+            animator.transform.Rotate(0, -45F, 0);
+        }
+
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -31,10 +40,12 @@ public class Player_Animations : MonoBehaviour
 
     public void PlayPlayer_Push_Anim()
     {
+        animator.transform.Rotate(0, 0F, 0);
         animator.SetTrigger(Player_Push_Rope);
     }
     public void PlayPlayer_Pull_Back_Anim()
     {
+        animator.transform.Rotate(0, 0F, 0);
         animator.SetTrigger(Player_Pull_Back); ;
     }
 }
