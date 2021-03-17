@@ -7,18 +7,20 @@ using UnityEngine.UI;
 
 public class Timing_Game_Play_Manager : MonoBehaviour
 {
-    public GameObject CurrentPlayer;
-    public GameObject TimingPrefab;
+
     public float CurrentTimeLeft;
+    public float Time_Per_Challange;
+    public float SuccessMoveDistance;
     public bool GameStarted = false;
     public GameObject GameStartPanel;
     public GameObject GameResultPanel;
     public GameObject GamePlayMessagePanel;
+    public GameObject RopeObject;
+    public GameObject CurrentPlayer;
+    public GameObject TimingPrefab;
     private GameObject[] Players;
     public Slider Timer_Slider;
-    public float SuccessMoveDistance;
     private DateTime Challange_Started;
-    public float Time_Per_Challange;
     private int CurrentPlayerIndex;
     private void Start()
     {
@@ -39,18 +41,19 @@ public class Timing_Game_Play_Manager : MonoBehaviour
     }
     private void ActivateCurrentPlayer(int Index)
     {
-       var r=  GameObject.FindGameObjectsWithTag("TimingBar").ToArray();
+        var r = GameObject.FindGameObjectsWithTag("TimingBar").ToArray();
         foreach (var item in r)
         {
             Destroy(item);
         }
         CurrentPlayer = Players[Index];
-        GameObject gtimer=Instantiate(TimingPrefab, CurrentPlayer.transform);
+        GameObject gtimer = Instantiate(TimingPrefab, CurrentPlayer.transform);
         gtimer.transform.localPosition = new Vector3(-0.1F, 1.6F, 0);
-        
+
     }
     public void Update()
     {
+
         if (GameStarted)
         {
             var elapsedSecond = (DateTime.Now - Challange_Started).TotalSeconds;
@@ -64,28 +67,49 @@ public class Timing_Game_Play_Manager : MonoBehaviour
                     CurrentPlayerIndex = 0;
                 ActivateCurrentPlayer(CurrentPlayerIndex);
             }
-
         }
+        Move_Rope_ToDirection();
     }
+    void Move_Rope_ToDirection()
+    {
+        if (MoveMultiPlayer == 0)
+            return;
+
+        float rst = SuccessMoveDistance * MoveMultiPlayer;
+        RopeObject.transform.Translate(new Vector3(0F,  rst * Time.deltaTime,0F));
+    }
+
+    float MoveMultiPlayer = 0;
     public void Tabbed()
     {
-       float Result=  CurrentPlayer.GetComponentInChildren<Timing_Bar>().Barpressed();
+        float Result = CurrentPlayer.GetComponentInChildren<Timing_Bar>().Barpressed();
+        Debug.Log("Result:" + Result);
         if (Mathf.Abs(Result) <= 1F) // iyi
         {
-            //playerAnimator.SetBool
+            foreach (var item in Players)
+            {
+                item.GetComponentInChildren<Animator>().SetTrigger("Push_Rope");
+            }
+            MoveMultiPlayer = 1;
         }
         else if (Mathf.Abs(Result) >= 3) // çok kötü 
         {
-
+            foreach (var item in Players)
+            {
+                item.GetComponentInChildren<Animator>().SetTrigger("Pull_Back");
+            }
+            MoveMultiPlayer = -1;
         }
         StartCoroutine(WaitFornextPlayer());
     }
 
     IEnumerator WaitFornextPlayer()
     {
+
+
         yield return new WaitForSeconds(1F);
-        
-        if (CurrentPlayerIndex < Players.Length)
+
+        if (CurrentPlayerIndex < Players.Length - 1)
             CurrentPlayerIndex++;
         else
             CurrentPlayerIndex = 0;
