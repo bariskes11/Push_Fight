@@ -11,6 +11,7 @@ public class CameraMovements : MonoBehaviour
     public Vector3 playerOffset;
     private Vector3 PlayerPosition;
     private GameObject playerObj;
+    public GameObject finisline;
     public int CurrentPlayerIndex;
     private PlayerIndexer[] PlayersList;
     private GameObject currentPlayerToZoom;
@@ -40,7 +41,7 @@ public class CameraMovements : MonoBehaviour
     {
         if (gm.Game_Finished)
         {
-            transform.LookAt(playerObj.transform);
+            transform.LookAt(finisline.transform);
             transform.Translate(Vector3.right * Time.deltaTime);
             return;
         }
@@ -71,7 +72,10 @@ public class CameraMovements : MonoBehaviour
 
     IEnumerator WaitForAnswerTimeout()
     {
-        playerObj = PlayersList.Where(x => x.PlayerIndex == CurrentPlayerIndex).FirstOrDefault().gameObject;
+       var playerObj =  PlayersList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).OrderBy(x => x.name).FirstOrDefault();
+        if (playerObj == null)
+            yield return new WaitForSeconds(0); 
+        
        var rslt= playerObj.GetComponentInChildren<QuestionCreator>().CreateQuestion();
         gm.ShowChallenge(rslt);
         yield return new WaitForSeconds(QuestionTimeOut);
@@ -82,7 +86,6 @@ public class CameraMovements : MonoBehaviour
         {
             CurrentPlayerIndex =0;
         }
-        
         QuestionTime = false;
     }
 }

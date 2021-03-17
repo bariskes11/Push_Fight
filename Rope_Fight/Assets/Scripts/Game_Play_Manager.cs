@@ -39,6 +39,15 @@ public class Game_Play_Manager : MonoBehaviour
     public GameObject Red_Pole;
     public GameObject Blue_Pole;
 
+
+    private enum Win_Lost
+    {
+        InGame,
+        Win,
+        Lost,
+    }
+
+
     private void LateUpdate()
     {
         if (GameStarted)
@@ -54,8 +63,9 @@ public class Game_Play_Manager : MonoBehaviour
             Rope.transform.position = Rope_Position;
             //Force_ApplyField.AddForce(Vector3.forward * TotalForce * Time.deltaTime,ForceMode.VelocityChange);
         }
-        
+
     }
+
 
     // Start is called before the first frame update
     void Start()
@@ -76,9 +86,10 @@ public class Game_Play_Manager : MonoBehaviour
     {
         if (isRed) // Bize Çarpan bir yastık.
         {
-            Vector3 playerPos = PlayerList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).FirstOrDefault().transform.position;
-            GameObject pol = Instantiate(Red_Pole,playerPos,Quaternion.identity);
-            
+           GameObject ps=  PlayerList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).FirstOrDefault();
+            ps.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen = true;
+            Vector3 playerPos = ps.transform.position;
+            GameObject pol = Instantiate(Red_Pole, playerPos, Quaternion.identity);
             playerPos.y += 2.5F;
             pol.transform.position = playerPos;
             pol.GetComponent<Animator>().SetInteger("PlayKick_Anim", 1);
@@ -86,12 +97,17 @@ public class Game_Play_Manager : MonoBehaviour
         }
         else // düşlmana çarpan bir yastık
         {
-            Vector3 playerPos = EnemyList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).FirstOrDefault().transform.position;
+            GameObject es = EnemyList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).FirstOrDefault();
+            Vector3 playerPos =es.transform.position;
+            es.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen = true;
             GameObject pol = Instantiate(Blue_Pole, playerPos, Quaternion.identity);
             playerPos.y += 2.5F;
             pol.transform.position = playerPos;
             pol.GetComponent<Animator>().SetInteger("PlayKick_Anim", 1);
             Destroy(pol, 3F);
+            
+
+
         }
     }
 
@@ -112,7 +128,7 @@ public class Game_Play_Manager : MonoBehaviour
             {
                 RectTransform r = item.GetComponent<RectTransform>();
                 r.localPosition = initialPositions.ElementAt(i);
-                
+
                 i++;
             }
         }
@@ -126,12 +142,11 @@ public class Game_Play_Manager : MonoBehaviour
     public void StartGame()
     {
         GameStarted = true;
+        currentState = Win_Lost.InGame;
         gameStartPanel.SetActive(false);
     }
     public void ShowChallenge(int[] Item_Indexes)
     {
-
-
         SetPositions();
         CurrentTimeLeft = Timer_Per_Question;
         AskingQuestion = true;
@@ -189,41 +204,86 @@ public class Game_Play_Manager : MonoBehaviour
     {
         if (AskingQuestion)
         {
-            var elapsedSecond = (DateTime.Now - questionAskedTime).TotalSeconds;
-            CurrentTimeLeft = Mathf.Clamp(Timer_Per_Question - float.Parse(elapsedSecond.ToString())
-                , 0, Timer_Per_Question);
-            Timer_Slider.value = CurrentTimeLeft;
-            setColor();
-            SetTotalAmounth();
-            if (CurrentOveralAmount > MinimumAmouthForAnswer)
+            QuestionAlgorithms();
+        }
+        CheckGameStatus();
+      
+        if (GameStarted && GenerateTotalList != null)
             {
-                
-                Success_Particle.Simulate(0.0f, true, true);
-                Success_Particle.Play();
-                PlayerForce -= Bonus_Force_Per_Question;
-                EnemyForce += Bonus_Force_Per_Question;
-                InstantiatePoleAndKickPlayer(false);
-                AskingQuestion = false;
-                // Enemy Hizasunda bir Pole Oluşturup Animasyon Yaptırarap Enemy yi düşür.
-            }
-            else if (Timer_Slider.value == 0)
-            {
-                
-                Fail_Particle.Simulate(0.0f, true, true);
-                Fail_Particle.Play();
-                EnemyForce -= Bonus_Force_Per_Question;
-                PlayerForce += Bonus_Force_Per_Question;
-                InstantiatePoleAndKickPlayer(true);
-                AskingQuestion = false;
-                // Player Hizasında bir Pole Oluşturup Animasyon Yaptorarak  Player I
 
+                CurrentOveralAmount = GenerateTotalList.Sum(x => x.overlapAmount) / GenerateTotalList.Count;
             }
+    }
+    public void FinishlineTouchDown(string Tag)
+    {
+        if (Tag == "Player")
+        {
+            currentState = Win_Lost.Lost;
+        }
+        else if (Tag == "Enemy")
+        {
+            currentState = Win_Lost.Win;
+        }
+        Game_Finished = true;
+    }
+
+    int EnemyCount;
+    int PlayerCount;
+    private Win_Lost currentState;
+    void CheckGameStatus()
+    {
+        if (currentState != Win_Lost.InGame)
+        {
+            return;
         }
 
-        if (GameStarted && GenerateTotalList != null)
+        EnemyCount = EnemyList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).Count();
+        PlayerCount = PlayerList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).Count();
+        if (EnemyCount == 0 || PlayerCount == 0)
+        {
+            Game_Finished = true;
+        }
+        if (EnemyCount == 0)
+        {
+            currentState = Win_Lost.Win;
+        }
+        else if (PlayerCount == 0)
+        {
+            currentState = Win_Lost.Lost;
+        }
+
+    }
+
+    private void QuestionAlgorithms()
+    {
+        var elapsedSecond = (DateTime.Now - questionAskedTime).TotalSeconds;
+        CurrentTimeLeft = Mathf.Clamp(Timer_Per_Question - float.Parse(elapsedSecond.ToString())
+            , 0, Timer_Per_Question);
+        Timer_Slider.value = CurrentTimeLeft;
+        setColor();
+        SetTotalAmounth();
+        if (CurrentOveralAmount > MinimumAmouthForAnswer)
         {
 
-            CurrentOveralAmount = GenerateTotalList.Sum(x => x.overlapAmount) / GenerateTotalList.Count;
+            Success_Particle.Simulate(0.0f, true, true);
+            Success_Particle.Play();
+            PlayerForce -= Bonus_Force_Per_Question;
+            EnemyForce += Bonus_Force_Per_Question;
+            InstantiatePoleAndKickPlayer(false);
+            AskingQuestion = false;
+            // Enemy Hizasunda bir Pole Oluşturup Animasyon Yaptırarap Enemy yi düşür.
+        }
+        else if (Timer_Slider.value == 0)
+        {
+
+            Fail_Particle.Simulate(0.0f, true, true);
+            Fail_Particle.Play();
+            EnemyForce -= Bonus_Force_Per_Question;
+            PlayerForce += Bonus_Force_Per_Question;
+            InstantiatePoleAndKickPlayer(true);
+            AskingQuestion = false;
+            // Player Hizasında bir Pole Oluşturup Animasyon Yaptorarak  Player I
+
         }
     }
 

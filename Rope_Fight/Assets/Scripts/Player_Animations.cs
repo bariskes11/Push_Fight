@@ -33,7 +33,7 @@ public class Player_Animations : MonoBehaviour
             animator.SetTrigger(Player_Hit_Trigger);
             rgd_body.isKinematic = false;
             rgd_body.constraints = RigidbodyConstraints.None;
-            rgd_body.AddForce(new Vector3(DarbeKuvveti, .7F, 0F), ForceMode.Impulse);
+            rgd_body.AddForce(new Vector3(DarbeKuvveti, 1.7F, 0F), ForceMode.Impulse);
             status.PlayerFallen = true;
         }
     }
