@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Game_Play_Manager : MonoBehaviour
@@ -38,8 +40,10 @@ public class Game_Play_Manager : MonoBehaviour
     private Vector3 Rope_Position;
     public GameObject Red_Pole;
     public GameObject Blue_Pole;
-
-
+    public GameObject Game_Finish_Panel;
+    public Image winImage;
+    public Image loseImage;
+    public Button NexLevel;
     private enum Win_Lost
     {
         InGame,
@@ -66,6 +70,29 @@ public class Game_Play_Manager : MonoBehaviour
 
     }
 
+    public void SetGameFinishStatus()
+    {
+        CheckGameStatus();
+        Game_Finish_Panel.GetComponent<Animator>().SetInteger("Game_Finished", 1);
+        if (currentState == Win_Lost.Win)
+        {
+            loseImage.GetComponent<SpriteRenderer>().enabled = false;
+            winImage.GetComponent<SpriteRenderer>().enabled = true;
+            NexLevel.gameObject.SetActive(true);
+        }
+        else if (currentState == Win_Lost.Lost)
+        {
+            loseImage.GetComponent<SpriteRenderer>().enabled = true;
+            winImage.GetComponent<SpriteRenderer>().enabled = false;
+            NexLevel.gameObject.SetActive(false);
+        }
+    }
+
+    public void LoadLevel2()
+    {
+        SceneManager.LoadScene("Game_Play_Timing_Scene");
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -86,7 +113,7 @@ public class Game_Play_Manager : MonoBehaviour
     {
         if (isRed) // Bize Çarpan bir yastık.
         {
-           GameObject ps=  PlayerList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).FirstOrDefault();
+            GameObject ps = PlayerList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).FirstOrDefault();
             ps.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen = true;
             Vector3 playerPos = ps.transform.position;
             GameObject pol = Instantiate(Red_Pole, playerPos, Quaternion.identity);
@@ -98,14 +125,14 @@ public class Game_Play_Manager : MonoBehaviour
         else // düşlmana çarpan bir yastık
         {
             GameObject es = EnemyList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).FirstOrDefault();
-            Vector3 playerPos =es.transform.position;
+            Vector3 playerPos = es.transform.position;
             es.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen = true;
             GameObject pol = Instantiate(Blue_Pole, playerPos, Quaternion.identity);
             playerPos.y += 2.5F;
             pol.transform.position = playerPos;
             pol.GetComponent<Animator>().SetInteger("PlayKick_Anim", 1);
             Destroy(pol, 3F);
-            
+
 
 
         }
@@ -207,12 +234,13 @@ public class Game_Play_Manager : MonoBehaviour
             QuestionAlgorithms();
         }
         CheckGameStatus();
-      
-        if (GameStarted && GenerateTotalList != null)
-            {
 
-                CurrentOveralAmount = GenerateTotalList.Sum(x => x.overlapAmount) / GenerateTotalList.Count;
-            }
+        if (GameStarted && GenerateTotalList != null)
+        {
+
+            CurrentOveralAmount = GenerateTotalList.Sum(x => x.overlapAmount) / GenerateTotalList.Count;
+        }
+        
     }
     public void FinishlineTouchDown(string Tag)
     {

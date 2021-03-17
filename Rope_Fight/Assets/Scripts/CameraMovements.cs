@@ -19,6 +19,7 @@ public class CameraMovements : MonoBehaviour
     public bool QuestionResulted = false;
     public bool Enabled_Camera_Zoom = true;
     public float QuestionTimeOut=5F;
+    public bool fired_GameFinishedEvents = false;
     Camera c;
     // Start is called before the first frame update
     void Start()
@@ -43,6 +44,10 @@ public class CameraMovements : MonoBehaviour
         {
             transform.LookAt(finisline.transform);
             transform.Translate(Vector3.right * Time.deltaTime);
+            if(!fired_GameFinishedEvents)
+            {
+                fired_GameFinishedEvents = true;
+            }
             return;
         }
         if (Enabled_Camera_Zoom)
@@ -74,7 +79,10 @@ public class CameraMovements : MonoBehaviour
     {
        var playerObj =  PlayersList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).OrderBy(x => x.name).FirstOrDefault();
         if (playerObj == null)
-            yield return new WaitForSeconds(0); 
+        {
+            QuestionTime = false;
+            yield return new WaitForSeconds(0);
+        }
         
        var rslt= playerObj.GetComponentInChildren<QuestionCreator>().CreateQuestion();
         gm.ShowChallenge(rslt);
