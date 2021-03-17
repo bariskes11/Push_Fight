@@ -71,6 +71,8 @@ public class Game_Play_Manager : MonoBehaviour
     }
     private void Update()
     {
+        if (Game_Finished)
+            return;
         if (AskingQuestion)
         {
             QuestionAlgorithms();
@@ -83,10 +85,22 @@ public class Game_Play_Manager : MonoBehaviour
         }
     }
 
-    public void SetGameFinishStatus()
+    public void SetGameFinishStatus(string Triggered)
     {
-        EnemyCount = EnemyList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).Count();
-        PlayerCount = PlayerList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).Count();
+        if (String.IsNullOrEmpty(Triggered))
+        {
+            EnemyCount = EnemyList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).Count();
+            PlayerCount = PlayerList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).Count();
+        }
+        else if (Triggered == "Player")
+        {
+            PlayerCount = 0;
+        }
+        else if (Triggered == "Enemy")
+        {
+            EnemyCount = 0;
+        }
+
 
         Game_Finish_Panel.GetComponent<Animator>().SetInteger("Game_Finished", 1);
         if (PlayerCount>0)
@@ -200,7 +214,7 @@ public class Game_Play_Manager : MonoBehaviour
         QuestionPanel.SetActive(true);
         start_Timer();
         GenerateTotalList = GameObject.FindObjectsOfType<OverLapChecker>().OrderBy(x => x.name).ToList();
-        List<ObjectMovement> moveable_objs = GameObject.FindObjectsOfType<ObjectMovement>().OrderBy(x => x.tag).ToList();
+        List<ObjectMovement> moveable_objs = GameObject.FindObjectsOfType<ObjectMovement>().OrderBy(x => x.name).ToList();
         int i = 0;
         foreach (var item in GenerateTotalList)
         {
@@ -218,6 +232,8 @@ public class Game_Play_Manager : MonoBehaviour
 
     void start_Timer()
     {
+        if (this.Game_Finished)
+            return;
         Timer_Slider.value = Timer_Per_Question;
         CurrentTimeLeft = Timer_Per_Question;
     }
@@ -277,7 +293,7 @@ public class Game_Play_Manager : MonoBehaviour
             if (!finishShown)
             {
                 finishShown = true;
-                SetGameFinishStatus();
+                SetGameFinishStatus(null);
 
             }
         }

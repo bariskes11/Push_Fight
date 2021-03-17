@@ -6,22 +6,32 @@ public class Game_Finish : MonoBehaviour
 {
 
     public Game_Play_Manager gm;
-     void Start()
+    void Start()
     {
         gm = FindObjectOfType<Game_Play_Manager>();
     }
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Finish_line Triggered" + other.gameObject.tag);
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.GetComponentInChildren<Animator>() != null)
         {
-            // show lossse panel
-            Debug.Log(" You Lost");
-        }
-        else if (other.gameObject.tag == "Enemy")
-        {
-            Debug.Log(" You Win");
-            // show win panel
+
+            string rslt = other.gameObject.GetComponentInChildren<Animator>().tag;
+            Debug.Log("Finish_line Triggered" + other.gameObject.tag + " " + rslt);
+            if (rslt == "Player")
+            {
+                // show lossse panel
+              //  gm.Game_Finished = true;
+                gm.SetGameFinishStatus(rslt);
+                //Debug.Log(" You Lost");
+            }
+            else if (rslt == "Enemy")
+            {
+            //    gm.Game_Finished = true;
+                gm.SetGameFinishStatus(rslt);
+                //Debug.Log(" You Win");
+
+                // show win panel
+            }
         }
     }
 }

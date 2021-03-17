@@ -57,7 +57,7 @@ public class CameraMovements : MonoBehaviour
         }
         else
         {
-            if (!QuestionTime)
+            if (!QuestionTime && !gm.Game_Finished)
             {
                 AskQuestion();
             }
@@ -81,6 +81,7 @@ public class CameraMovements : MonoBehaviour
         }
  
         var rslt = playerObj.GetComponentInChildren<QuestionCreator>().CreateQuestion();
+        yield return new WaitForSeconds(0.02F);
         gm.ShowChallenge(rslt);
         yield return new WaitForSeconds(QuestionTimeOut);
         playerObj.GetComponentInChildren<QuestionCreator>().CloseQuestion();
