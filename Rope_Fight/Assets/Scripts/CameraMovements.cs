@@ -31,7 +31,7 @@ public class CameraMovements : MonoBehaviour
         playerObj = PlayersList.Where(x => x.PlayerIndex == CurrentPlayerIndex).FirstOrDefault().gameObject;
     }
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         if (gm.GameStarted)
         {
@@ -46,6 +46,7 @@ public class CameraMovements : MonoBehaviour
             transform.Translate(Vector3.right * Time.deltaTime);
             if(!fired_GameFinishedEvents)
             {
+                gm.SetGameFinishStatus();
                 fired_GameFinishedEvents = true;
             }
             return;

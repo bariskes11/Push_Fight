@@ -72,19 +72,23 @@ public class Game_Play_Manager : MonoBehaviour
 
     public void SetGameFinishStatus()
     {
-        CheckGameStatus();
+        EnemyCount = EnemyList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).Count();
+        PlayerCount = PlayerList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).Count();
+
         Game_Finish_Panel.GetComponent<Animator>().SetInteger("Game_Finished", 1);
-        if (currentState == Win_Lost.Win)
+        if (PlayerCount>0)
         {
             loseImage.GetComponent<SpriteRenderer>().enabled = false;
             winImage.GetComponent<SpriteRenderer>().enabled = true;
             NexLevel.gameObject.SetActive(true);
+            currentState = Win_Lost.Win;
         }
-        else if (currentState == Win_Lost.Lost)
+        else if (EnemyCount >0)
         {
             loseImage.GetComponent<SpriteRenderer>().enabled = true;
             winImage.GetComponent<SpriteRenderer>().enabled = false;
             NexLevel.gameObject.SetActive(false);
+            currentState = Win_Lost.Lost;
         }
     }
 
