@@ -28,7 +28,7 @@ public class Timing_Game_Play_Manager : MonoBehaviour
     public Slider Timer_Slider;
     public Image winImage;
     public Image loseImage;
-    public Button NexLevel;
+
 
     private DateTime Challange_Started;
     private int CurrentPlayerIndex;
@@ -68,26 +68,29 @@ public class Timing_Game_Play_Manager : MonoBehaviour
 
     public void ReloadScene()
     {
-       string n= SceneManager.GetActiveScene().name;
-        SceneManager.LoadScene(n);
+        string SName = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(SName);
     }
-
+    public void LoadNextLevel()
+    {
+        SceneManager.LoadScene("GamePlayScene");
+    }
     public void SetGameFinishStatus(string Triggered)
     {
 
         Game_Finish_Panel.GetComponent<Animator>().SetInteger("Game_Finished", 1);
-        if (Triggered=="Enemy")
+        if (Triggered == "Enemy")
         {
             loseImage.GetComponent<Image>().enabled = false;
             winImage.GetComponent<Image>().enabled = true;
-            NexLevel.gameObject.SetActive(true);
-            
+
+
         }
-        else 
+        else
         {
             loseImage.GetComponent<Image>().enabled = true;
             winImage.GetComponent<Image>().enabled = false;
-            NexLevel.gameObject.SetActive(false);
+
         }
         this.GameStarted = false;
     }
@@ -128,7 +131,7 @@ public class Timing_Game_Play_Manager : MonoBehaviour
             return;
 
         float rst = SuccessMoveDistance * MoveMultiPlayer;
-        RopeObject.transform.Translate(new Vector3(0F,  rst * Time.deltaTime,0F));
+        RopeObject.transform.Translate(new Vector3(0F, rst * Time.deltaTime, 0F));
     }
 
     private void setColor()
@@ -178,7 +181,7 @@ public class Timing_Game_Play_Manager : MonoBehaviour
             foreach (var item in Players)
             {
                 item.GetComponentInChildren<Animator>().SetTrigger("Push_Rope");
-                
+
             }
             MoveMultiPlayer = 1;
             Fail_Particle.Simulate(0.0f, true, true);

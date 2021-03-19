@@ -67,7 +67,7 @@ public class Game_Play_Manager : MonoBehaviour
             Rope.transform.position = Rope_Position;
             //Force_ApplyField.AddForce(Vector3.forward * TotalForce * Time.deltaTime,ForceMode.VelocityChange);
         }
-    
+
     }
     private void Update()
     {
@@ -84,7 +84,10 @@ public class Game_Play_Manager : MonoBehaviour
             CurrentOveralAmount = GenerateTotalList.Sum(x => x.overlapAmount) / GenerateTotalList.Count;
         }
     }
-
+    public void Reloadlevel()
+    {
+        SceneManager.LoadScene("Game_Play_Timing_Scene");
+    }
     public void SetGameFinishStatus(string Triggered)
     {
         if (String.IsNullOrEmpty(Triggered))
@@ -103,14 +106,14 @@ public class Game_Play_Manager : MonoBehaviour
 
 
         Game_Finish_Panel.GetComponent<Animator>().SetInteger("Game_Finished", 1);
-        if (PlayerCount>0)
+        if (PlayerCount > 0)
         {
             loseImage.GetComponent<Image>().enabled = false;
             winImage.GetComponent<Image>().enabled = true;
             NexLevel.gameObject.SetActive(true);
             currentState = Win_Lost.Win;
         }
-        else if (EnemyCount >0)
+        else if (EnemyCount > 0)
         {
             loseImage.GetComponent<Image>().enabled = true;
             winImage.GetComponent<Image>().enabled = false;
@@ -119,11 +122,7 @@ public class Game_Play_Manager : MonoBehaviour
         }
     }
 
-    public void LoadLevel2()
-    {
-        SceneManager.LoadScene("Game_Play_Timing_Scene");
-    }
-
+   
 
     // Start is called before the first frame update
     void Start()
@@ -260,7 +259,7 @@ public class Game_Play_Manager : MonoBehaviour
     }
 
     // Update is called once per frame
-   
+
     public void FinishlineTouchDown(string Tag)
     {
         if (Tag == "Player")

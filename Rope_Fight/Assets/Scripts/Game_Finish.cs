@@ -12,11 +12,20 @@ public class Game_Finish : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.tag == "Untagged")
+        {
+            var r = other.gameObject.GetComponent<PlayerCurrentStatus>();
+            if (r != null && r.PlayerFallen)
+            {
+                return;
+            }
+        }
         if (other.gameObject.GetComponentInChildren<Animator>() != null)
         {
 
             string rslt = other.gameObject.GetComponentInChildren<Animator>().tag;
             Debug.Log("Finish_line Triggered" + other.gameObject.tag + " " + rslt);
+            
             if (rslt == "Player")
             {
                 // show lossse panel
