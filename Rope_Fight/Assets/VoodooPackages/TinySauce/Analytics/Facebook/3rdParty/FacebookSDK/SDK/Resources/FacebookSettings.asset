@@ -16,9 +16,9 @@ MonoBehaviour:
   clientTokens:
   - 
   appIds:
-  - 820218928840006
+  - 936126027199064
   appLabels:
-  - TinySauce-Unity-SDK
+  - Rope_Fight
   cookie: 1
   logging: 1
   status: 1

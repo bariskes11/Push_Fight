@@ -12,7 +12,7 @@ public class Game_Finish_Timer_Mode : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         string rslt = other.gameObject.tag;
-        Debug.Log("Finish_line Triggered" + other.gameObject.tag + " " + rslt);
+        //Debug.Log("Finish_line Triggered" + other.gameObject.tag + " " + rslt);
         if (rslt == "Player")
         {
             // show lossse panel

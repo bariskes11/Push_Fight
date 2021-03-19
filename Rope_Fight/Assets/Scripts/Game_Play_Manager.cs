@@ -50,7 +50,7 @@ public class Game_Play_Manager : MonoBehaviour
         Win,
         Lost,
     }
-
+    
 
     private void LateUpdate()
     {
@@ -90,6 +90,7 @@ public class Game_Play_Manager : MonoBehaviour
     }
     public void SetGameFinishStatus(string Triggered)
     {
+        TinySauce.OnGameFinished(0);
         if (String.IsNullOrEmpty(Triggered))
         {
             EnemyCount = EnemyList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).Count();
@@ -127,6 +128,7 @@ public class Game_Play_Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        TinySauce.OnGameStarted();
         EnemyList = GameObject.FindGameObjectsWithTag("Enemy");
         PlayerList = GameObject.FindGameObjectsWithTag("Player");
         GenerateTotalList = GameObject.FindObjectsOfType<OverLapChecker>().ToList();

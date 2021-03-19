@@ -34,6 +34,7 @@ public class Timing_Game_Play_Manager : MonoBehaviour
     private int CurrentPlayerIndex;
     private void Start()
     {
+        TinySauce.OnGameStarted();
         CurrentPlayerIndex = 0;
         GameStartPanel.SetActive(true);
         GamePlayMessagePanel.SetActive(false);
@@ -79,6 +80,7 @@ public class Timing_Game_Play_Manager : MonoBehaviour
     {
 
         Game_Finish_Panel.GetComponent<Animator>().SetInteger("Game_Finished", 1);
+        TinySauce.OnGameFinished(0);
         if (Triggered == "Enemy")
         {
             loseImage.GetComponent<Image>().enabled = false;
