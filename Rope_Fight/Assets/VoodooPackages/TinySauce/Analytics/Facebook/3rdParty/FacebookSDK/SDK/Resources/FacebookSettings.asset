@@ -24,7 +24,7 @@ MonoBehaviour:
   status: 1
   xfbml: 0
   frictionlessRequests: 1
-  androidKeystorePath: 
+  androidKeystorePath: F:\UNITY_GAMES\Push_Fight\Rope_Fight\user.keystore
   iosURLSuffix: 
   appLinkSchemes:
   - list: []
