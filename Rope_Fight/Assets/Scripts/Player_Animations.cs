@@ -18,11 +18,11 @@ public class Player_Animations : MonoBehaviour
         status = GetComponent<PlayerCurrentStatus>();
         if (animator.transform.tag == "Player")
         {
-            animator.transform.Rotate(0, -90F, 0);
+            //animator.transform.Rotate(0, -90F, 0);
         }
         else
         {
-            animator.transform.Rotate(0, -45F, 0);
+          //  animator.transform.Rotate(0, -45F, 0);
         }
 
     }
