@@ -14,6 +14,7 @@ public class ObjectMovement : MonoBehaviour, IPointerDownHandler, IPointerUpHand
     private float fakeY;
     private float myWidth;
     private float myHeight;
+    public string objectName;
 
     public RectTransform ParentRT;
     public RectTransform MyRect;

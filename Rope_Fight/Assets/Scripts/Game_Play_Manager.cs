@@ -214,8 +214,8 @@ public class Game_Play_Manager : MonoBehaviour
         questionAskedTime = DateTime.Now;
         QuestionPanel.SetActive(true);
         start_Timer();
-        GenerateTotalList = GameObject.FindObjectsOfType<OverLapChecker>().OrderBy(x => x.ObjectName).ToList();
-        List<ObjectMovement> moveable_objs = GameObject.FindObjectsOfType<ObjectMovement>().OrderBy(x => x.name).ToList();
+        GenerateTotalList = GameObject.FindObjectsOfType<OverLapChecker>().OrderBy(x => x.name).ToList();
+        List<ObjectMovement> moveable_objs = GameObject.FindObjectsOfType<ObjectMovement>().OrderBy(x => x.objectName).ToList();
         int i = 0;
         foreach (var item in GenerateTotalList)
         {
@@ -224,10 +224,24 @@ public class Game_Play_Manager : MonoBehaviour
             i++;
         }
         i = 0;
+
         foreach (var item in moveable_objs)
         {
-            item.GetComponent<Image>().color = soruSablonu.shape_Colors[Item_Indexes[i]];
-            i++;
+            if (item.objectName == "Daire")
+            {
+                item.GetComponent<Image>().color = soruSablonu.shape_Colors[Item_Indexes[0]];
+            }
+            else if (item.objectName == "Kare")
+            {
+                item.GetComponent<Image>().color = soruSablonu.shape_Colors[Item_Indexes[1]];
+            }
+            else if (item.objectName == "Ucgen")
+            {
+                item.GetComponent<Image>().color = soruSablonu.shape_Colors[Item_Indexes[2]];
+
+
+
+            }
         }
     }
 
