@@ -7,6 +7,7 @@ public class OverLapChecker : MonoBehaviour
     public float maxDistance = 50F;
     public float mindistance = 10F;
     public Game_Play_Manager gm = new Game_Play_Manager();
+    public string ObjectName;
     private Transform obj_pos;
     private void Start()
     {

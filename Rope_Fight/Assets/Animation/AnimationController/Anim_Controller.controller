@@ -177,7 +177,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Pull_Rope_Anim
-  m_Speed: 1
+  m_Speed: 2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 3007378077064686847}
@@ -251,7 +251,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Pul_Back_Anim
-  m_Speed: -1
+  m_Speed: -0.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -5772509687756557976}
@@ -264,7 +264,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: ba1ba6b6f05ec9741b36485a18393597, type: 2}
+  m_Motion: {fileID: 7400000, guid: af96969f8a06ed8419daf9080ff38780, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

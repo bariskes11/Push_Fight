@@ -73,7 +73,11 @@ public class CameraMovements : MonoBehaviour
 
     IEnumerator WaitForAnswerTimeout()
     {
-        var playerObj = PlayersList.ToList().Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).OrderBy(x => x.name).FirstOrDefault();
+       int[] AvailableIndexes=  PlayersList.Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false).ToList().Select(x=>x.PlayerIndex).ToArray();
+
+
+        var playerObj = PlayersList.Where(x => x.GetComponentInParent<PlayerCurrentStatus>().PlayerFallen == false)
+            .OrderBy(x => x.name).FirstOrDefault();
         if (playerObj == null)
         {
           
@@ -87,10 +91,22 @@ public class CameraMovements : MonoBehaviour
         playerObj.GetComponentInChildren<QuestionCreator>().CloseQuestion();
         gm.SetTotalAmounth();
         CurrentPlayerIndex++;
-        if (CurrentPlayerIndex > PlayersList.Count() - 1)
+        if (CurrentPlayerIndex > PlayersList.Length - 1)
         {
             CurrentPlayerIndex = 0;
         }
+        if (!AvailableIndexes.Contains(CurrentPlayerIndex) && AvailableIndexes.Length > 0)
+        {
+            CurrentPlayerIndex = AvailableIndexes[0];
+        }
+        else if(AvailableIndexes.Length > 0)// curren playerIndex bulunuyor
+        {
+          
+        }
+
+
+        
+        
         QuestionTime = false;
     }
 }

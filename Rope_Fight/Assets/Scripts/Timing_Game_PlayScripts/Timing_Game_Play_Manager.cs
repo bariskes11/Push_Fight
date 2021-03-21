@@ -25,6 +25,7 @@ public class Timing_Game_Play_Manager : MonoBehaviour
     public GameObject TimingPrefab;
     public GameObject Game_Finish_Panel;
     private GameObject[] Players;
+    private GameObject[] Enemies;
     public Slider Timer_Slider;
     public Image winImage;
     public Image loseImage;
@@ -39,6 +40,7 @@ public class Timing_Game_Play_Manager : MonoBehaviour
         GameStartPanel.SetActive(true);
         GamePlayMessagePanel.SetActive(false);
         Players = GameObject.FindGameObjectsWithTag("Player").OrderBy(x => x.name).ToArray();
+        Enemies = GameObject.FindGameObjectsWithTag("Enemy").OrderBy(x => x.name).ToArray();
         if (Players.Length == 0)
         {
             Debug.Log("Player Bulunamadı");
@@ -159,6 +161,15 @@ public class Timing_Game_Play_Manager : MonoBehaviour
     }
 
 
+    private void AnimateEnemies(string Anim)
+    {
+        foreach (var item in Enemies)
+        {
+            item.GetComponentInChildren<Animator>().SetTrigger(Anim);
+        }
+    }
+
+
     float MoveMultiPlayer = 0;
     public void Tabbed(bool timerFailed)
     {
@@ -173,7 +184,7 @@ public class Timing_Game_Play_Manager : MonoBehaviour
             {
                 item.GetComponentInChildren<Animator>().SetTrigger("Pull_Back");
             }
-
+            AnimateEnemies("Push_Rope");
             Success_Particle.Simulate(0.0f, true, true);
             Success_Particle.Play();
             MoveMultiPlayer = -1;
@@ -183,8 +194,8 @@ public class Timing_Game_Play_Manager : MonoBehaviour
             foreach (var item in Players)
             {
                 item.GetComponentInChildren<Animator>().SetTrigger("Push_Rope");
-
             }
+            AnimateEnemies("Pull_Back");
             MoveMultiPlayer = 1;
             Fail_Particle.Simulate(0.0f, true, true);
             Fail_Particle.Play();

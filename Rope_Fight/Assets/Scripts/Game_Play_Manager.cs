@@ -86,7 +86,7 @@ public class Game_Play_Manager : MonoBehaviour
     }
     public void Reloadlevel()
     {
-        SceneManager.LoadScene("Game_Play_Timing_Scene");
+        SceneManager.LoadScene("GamePlayScene");
     }
     public void SetGameFinishStatus(string Triggered)
     {
@@ -214,7 +214,7 @@ public class Game_Play_Manager : MonoBehaviour
         questionAskedTime = DateTime.Now;
         QuestionPanel.SetActive(true);
         start_Timer();
-        GenerateTotalList = GameObject.FindObjectsOfType<OverLapChecker>().OrderBy(x => x.name).ToList();
+        GenerateTotalList = GameObject.FindObjectsOfType<OverLapChecker>().OrderBy(x => x.ObjectName).ToList();
         List<ObjectMovement> moveable_objs = GameObject.FindObjectsOfType<ObjectMovement>().OrderBy(x => x.name).ToList();
         int i = 0;
         foreach (var item in GenerateTotalList)
